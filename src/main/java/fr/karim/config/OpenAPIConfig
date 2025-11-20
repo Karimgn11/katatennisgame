@@ -1,0 +1,31 @@
+package fr.karim.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.models.GroupedOpenApi;   // ← IMPORT IMPORTANT
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OpenApiConfig {
+
+    // -------- CONFIG OPENAPI (titre, version...) --------
+    @Bean
+    public OpenAPI tennisGameOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Tennis Game API")
+                        .description("API de scoring pour jeux de tennis")
+                        .version("1.0.0"));
+    }
+
+    // -------- FORCE SWAGGER À SCANNER TES CONTROLLERS --------
+    @Bean
+    public GroupedOpenApi tennisGameApi() {
+        return GroupedOpenApi.builder()
+                .group("tennis-games")
+                .packagesToScan("fr.karim.controller")
+                .pathsToMatch("/api/**")
+                .build();
+    }
+}

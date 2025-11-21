@@ -8,6 +8,13 @@ import java.util.List;
 @Component
 public class TennisScoringEngineImpl implements TennisScoringEngine {
 
+    /**
+     * Calcule le score à partir d'une séquence
+     * de points gagnés par le joueur A ou B. La méthode avance point par point,
+     * construit la timeline et s'arrête dès qu'un joueur remporte le jeu 
+     * selon les règles définis dans l kata
+     */
+
     @Override
     public TennisScoreResult computeScore(String sequence) {
         int scoreA = 0;
@@ -24,6 +31,9 @@ public class TennisScoringEngineImpl implements TennisScoringEngine {
             }
 
             timeline.add(currentScoreAsString(scoreA, scoreB));
+
+             // A n'importe quel moment, Si les conditions de victoire sont réunies, 
+             // le jeu est terminé
 
             if (isGameWon(scoreA, scoreB)) {
                 String winner = scoreA > scoreB ? "A" : "B";
@@ -54,6 +64,8 @@ public class TennisScoringEngineImpl implements TennisScoringEngine {
                 return "Advantage Player B";
             }
         }
+     // Cas normal : on tranmets à la méthodes les points convertiss en notation tennis (15/30/40)
+
         return "Player A : " + toTennisScore(a) + " / Player B : " + toTennisScore(b);
     }
 
@@ -66,6 +78,11 @@ public class TennisScoringEngineImpl implements TennisScoringEngine {
             default -> "40";
         };
     }
+
+      /**
+     * Règle officielle : un joueur gagne le jeu s'il a au moins 4 points
+     * et possède 2 points d'avance sur son adversaire.
+     */
 
     private boolean isGameWon(int a, int b) {
         return (a >= 4 || b >= 4) && Math.abs(a - b) >= 2;
